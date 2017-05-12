@@ -1,0 +1,10 @@
+{
+  "type": "virtualbox-iso",
+  "guest_os_type": "Nix_OS",
+  "iso_url": "https://d3g5gsiof5omrk.cloudfront.net/nixos/17.03/nixos-17.03.1123.4a7a03913d/nixos-minimal-17.03.1123.4a7a03913d-x86_64-linux.iso",
+  "iso_checksum": "899dfe09620d6b602ec3f2f529aaba1ae8fad00c0f5b744dcce145382503acd8",
+  "iso_checksum_type": "sha256",
+  "ssh_username": "packer",
+  "ssh_password": "packer",
+  "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
+}
