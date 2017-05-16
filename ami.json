@@ -1,0 +1,32 @@
+{
+  "builders":[
+    {
+      "type":"amazon-ebs",
+      "region":"eu-central-1",
+      "source_ami":"ami-5450803b",
+      "ami_name": "snt-ami-{{timestamp}}",
+      "instance_type":"m3.large",
+      "ami_virtualization_type":"hvm",
+      "ssh_username":"root"
+    }
+  ],
+
+  "provisioners":[
+    {
+      "type": "file",
+      "direction": "download",
+      "source" :"/etc/nixos/configuration.nix",
+      "destination" :"./old_config.nix"
+    },
+    {
+      "type": "file",
+      "direction": "download",
+      "source" :"/root/.ssh/authorized_keys",
+      "destination" :"./old_key"
+    },
+    {
+      "type": "shell",
+      "script": "./ami_install.sh"
+    }
+  ]
+}
