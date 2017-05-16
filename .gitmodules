@@ -1,0 +1,4 @@
+[submodule "nixpkgs-channels"]
+	path = nixpkgs-channels
+	url = git@github.com:NixOS/nixpkgs-channels.git
+	branch = nixos-17.03-small
