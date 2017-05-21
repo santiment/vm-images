@@ -12,6 +12,6 @@
     "ws": "^3.0.0"
   },
   "bin": {
-    "trollbox-client":"./main.js"
+    "trollboxclient":"./main.js"
   }
 }

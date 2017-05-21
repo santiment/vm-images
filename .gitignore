@@ -3,3 +3,10 @@ packer_cache/
 
 # For built boxes
 *.box
+
+# Emacs backups
+*~
+
+# Nix result symlinks
+**/result
+**/result-*

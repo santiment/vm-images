@@ -21,7 +21,7 @@ nixos-generate-config --root /mnt
 
 cat >/mnt/etc/nixos/platform.nix <<NIX
 # Virtualbox-specific image configuration
-{config.pkgs, ...}:
+{config, pkgs, ...}:
 
 {
   imports = [./hardware-configuration.nix];
