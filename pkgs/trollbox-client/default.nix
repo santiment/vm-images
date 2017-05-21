@@ -1,4 +1,4 @@
-{yarn2nix? (import <custom> {}).yarn2nix}:
+{yarn2nix}:
 {
   trollboxClient = yarn2nix.buildYarnPackage {
     name = "trollbox-client";
