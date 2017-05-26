@@ -1,0 +1,25 @@
+{
+  "builders":[
+    {
+      "type":"amazon-ebs",
+      "region":"eu-central-1",
+      "source_ami":"ami-5450803b",
+      "ami_name": "santiment-bastion-v1.0.3",
+      "instance_type":"m3.large",
+      "ami_virtualization_type":"hvm",
+      "ssh_username":"root"
+    }
+  ],
+
+  "provisioners":[
+    {
+      "type": "file",
+      "source": "./",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "script": "./bastion_install.sh"
+    }
+  ]
+}
