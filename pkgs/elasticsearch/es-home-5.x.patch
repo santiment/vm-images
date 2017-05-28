@@ -1,0 +1,33 @@
+diff --git a/bin/elasticsearch b/bin/elasticsearch
+index 9020847..307ca97 100755
+--- a/bin/elasticsearch
++++ b/bin/elasticsearch
+@@ -105,7 +105,11 @@ while [ -h "$SCRIPT" ] ; do
+ done
+ 
+ # determine elasticsearch home
+-ES_HOME=`dirname "$SCRIPT"`/..
++
++if [ -z "$ES_HOME" ]; then
++    echo "You must set the ES_HOME var" >&2
++    exit 1
++fi
+ 
+ # make ELASTICSEARCH_HOME absolute
+ ES_HOME=`cd "$ES_HOME"; pwd`
+diff --git a/bin/elasticsearch-plugin b/bin/elasticsearch-plugin
+index 77d83af..013e02d 100755
+--- a/bin/elasticsearch-plugin
++++ b/bin/elasticsearch-plugin
+@@ -16,7 +16,10 @@ while [ -h "$SCRIPT" ] ; do
+ done
+ 
+ # determine elasticsearch home
+-ES_HOME=`dirname "$SCRIPT"`/..
++if [ -z "$ES_HOME" ]; then
++    echo "You must set the ES_HOME var" >&2
++    exit 1
++fi
+ 
+ # make ELASTICSEARCH_HOME absolute
+ ES_HOME=`cd "$ES_HOME"; pwd`

@@ -1,0 +1,41 @@
+{
+  "builders":[
+    {
+      "type":"amazon-ebs",
+      "region":"eu-central-1",
+      "source_ami":"ami-5450803b",
+      "ami_name": "santiment-elasticsearch-main-master-v1.0.3",
+      "instance_type":"t2.medium",
+      "ami_virtualization_type":"hvm",
+      "ssh_username":"root",
+
+      "launch_block_device_mappings": [
+        {
+          "device_name": "/dev/sdb",
+          "volume_size": 3,
+          "volume_type": "gp2",
+          "delete_on_termination": true
+        }
+      ],
+
+      "ami_block_device_mappings": [
+        {
+          "device_name": "/dev/sdb",
+          "virtual_name": "ephemeral0"
+        }
+      ]
+    }
+  ],
+
+  "provisioners":[
+    {
+      "type": "file",
+      "source": "./",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "script": "./elasticsearch_main_master.sh"
+    }
+  ]
+}
