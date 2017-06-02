@@ -12,6 +12,7 @@
     '';
 
     cluster_name = "main";
+    listenAddress = "[ \"_site_\", \"_local_\"]";
 
     dataDir = "/var/lib/elasticsearch";
 

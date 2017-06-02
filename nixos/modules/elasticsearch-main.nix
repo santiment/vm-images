@@ -364,6 +364,18 @@ in {
 
         # Must be changed when bootstrap.mlockall: true
         LimitMEMLOCK = "infinity";
+
+        # Disable timeout logic and wait until process is stopped
+        TimeoutStopSec = 0;
+
+        # SIGTERM signal is used to stop the Java process
+        KillSignal = "SIGTERM";
+
+        # Java process is never killed
+        SendSIGKILL = "no";
+
+        # When a JVM receives a SIGTERM signal it exits with code 143
+        SuccessExitStatus = "143";
       };
 
       preStart = ''
@@ -375,14 +387,17 @@ in {
         ln -sfT ${cfg.package}/modules ${cfg.dataDir}/modules
         if [ "$(id -u)" = 0 ]; then chown -R elasticsearch ${cfg.dataDir}; fi
       '';
-      postStart = mkBefore ''
-        until ${pkgs.curl.bin}/bin/curl -s -o /dev/null ${cfg.listenAddress}:${toString cfg.port}; do
-          sleep 1
-        done
-      '';
+      # postStart = mkBefore ''
+      #   until ${pkgs.curl.bin}/bin/curl -s -o /dev/null ${cfg.listenAddress}:${toString cfg.port}; do
+      #     sleep 1
+      #   done
+      # '';
     };
 
     #environment.systemPackages = [ cfg.package ];
+
+    # Enable ports on firewall
+    networking.firewall.allowedTCPPorts = [ cfg.port cfg.tcp_port ];
 
     users = {
       groups.elasticsearch.gid = config.ids.gids.elasticsearch;

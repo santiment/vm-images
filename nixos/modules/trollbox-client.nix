@@ -37,6 +37,18 @@ in {
       type = types.string;
     };
 
+    useEnvironmentFile = mkOption {
+      description = "Pass configuration environment variables via a file at runtime instead of via options";
+      default = false;
+      type = types.bool;
+    };
+
+    environmentFilePath = mkOption {
+      description = "Path to environment file to be read at runtime";
+      default = /nofile;
+      type = types.path;
+    };
+
   };
 
   config = mkIf cfg.enable {
@@ -45,13 +57,15 @@ in {
       wantedBy = [ "multi-user.target" ];
       after = [ "network.target" ];
 
-      environment = {
+      environment = mkIf (!cfg.useEnvironmentFile) {
         TC_ELASTICSEARCH_API_VERSION = cfg.elasticsearchAPIVersion;
         TC_ELASTICSEARCH_PORT = cfg.elasticsearchPort;
         TC_POLONIEX_WEBSOCKET_URL = cfg.poloniexWebsocketUrl;
         TC_ELASTICSEARCH_HOST = cfg.elasticsearchHost;
         NODE_ENV="production";
       };
+
+
 
       serviceConfig = {
         ExecStart="${package}/bin/trollboxclient";
@@ -61,6 +75,7 @@ in {
         StandardError="syslog";                # Output to syslog
         SyslogIdentifier="trollboxclient";
         User="trollboxclient";
+        EnvironmentFile = mkIf cfg.useEnvironmentFile cfg.environmentFilePath;
       };
 
 
