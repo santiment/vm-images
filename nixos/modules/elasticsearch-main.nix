@@ -376,6 +376,10 @@ in {
 
         # When a JVM receives a SIGTERM signal it exits with code 143
         SuccessExitStatus = "143";
+
+        Restart="always";
+        RestartSec=10;                       # Restart service after 10 seconds if node service crashes
+
       };
 
       preStart = ''
