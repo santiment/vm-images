@@ -130,7 +130,19 @@ let
     # WARNING: This option will be removed in Elasticsearch 6.0.0 and is provided
     # only for migration purposes.
     #-Delasticsearch.json.allow_unquoted_field_names=true
+    -Djava.security.policy=${cfg.dataDir}/security
 
+  '';
+
+  securityConfig = ''
+    grant {
+      permission java.io.FilePermission "${cfg.dataDir}/plugins/discovery-ec2/*", "read";
+      permission java.io.FilePermission "${cfg.dataDir}/plugins/discovery-ec2", "read";
+      permission javax.management.MBeanServerPermission "createMBeanServer";
+      permission javax.management.MBeanServerPermission "findMBeanServer";
+      permission javax.management.MBeanPermission "com.amazonaws.metrics.*", "*";
+      permission javax.management.MBeanTrustPermission "register";
+    };
   '';
 
   configDir = pkgs.buildEnv {
@@ -152,8 +164,10 @@ let
     paths = cfg.plugins;
   };
 
-  defaultES = (import <custom> {}).elasticsearch5;
+  custom = import <custom> {};
 
+  defaultES = custom.elasticsearch;
+  discovery-ec2 = custom.elasticsearch5Plugins.discovery-ec2;
 
 in {
 
@@ -365,8 +379,8 @@ in {
         # Must be changed when bootstrap.mlockall: true
         LimitMEMLOCK = "infinity";
 
-        # Disable timeout logic and wait until process is stopped
-        TimeoutStopSec = 0;
+        # Disable timeout logic and wait until process is started and stopped
+        TimeoutSec = "infinity";
 
         # SIGTERM signal is used to stop the Java process
         KillSignal = "SIGTERM";
@@ -384,8 +398,10 @@ in {
 
       preStart = ''
         mkdir -m 0700 -p ${cfg.dataDir}
+        echo '${securityConfig}' >${cfg.dataDir}/security
 
         # Install plugins
+        # mkdir -p ${cfg.dataDir}/plugins
         ln -sfT ${esPlugins} ${cfg.dataDir}/plugins
         ln -sfT ${cfg.package}/lib ${cfg.dataDir}/lib
         ln -sfT ${cfg.package}/modules ${cfg.dataDir}/modules

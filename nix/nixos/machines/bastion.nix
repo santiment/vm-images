@@ -44,6 +44,4 @@ in {
       EnvironmentFile = /etc/ec2-metadata/user-data;
     };
   };
-
-
 }
