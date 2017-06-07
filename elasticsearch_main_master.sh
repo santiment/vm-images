@@ -14,7 +14,8 @@ cat >/etc/nixos/configuration.nix <<EOF
 
 {config, pkgs, ...}:
 {
-  nix.nixPath = ["nixpkgs=/nixpkgs" "custom=/custom/nix/pkgs" "user-data=/etc/ec2-metadata/user-data" "platform=/custom/nix/nixos/machines/ami-platform.nix" "nixos-config=/etc/nixos/configuration.nix"];
+  customNixPathStr="nixpkgs=/nixpkgs:custom=/custom/nix/pkgs:platform=/custom/nix/nixos/machines/ami-platform.nix:nixos-config=/etc/nixos/configuration.nix:user-data=/etc/ec2-metadata/user-data";
+  nix.nixPath=["nixpkgs=/nixpkgs" "custom=/custom/nix/pkgs" "platform=/custom/nix/nixos/machines/ami-platform.nix" "nixos-config=/etc/nixos/configuration.nix" "user-data=/etc/ec2-metadata/user-data"];
 
   imports = [ /custom/nix/nixos/machines/elasticsearch-master.nix];
 }
