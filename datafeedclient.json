@@ -1,0 +1,30 @@
+{
+  "builders":[
+    {
+      "type":"amazon-ebs",
+      "region":"eu-central-1",
+      "source_ami":"ami-5450803b",
+      "ami_name": "santiment-datafeed-v1.1.1",
+      "instance_type":"m3.large",
+      "ami_virtualization_type":"hvm",
+      "ssh_username":"root"
+    }
+  ],
+
+  "provisioners":[
+    {
+      "type": "shell-local",
+      "command": "tar -czvf custompkgs.tar.gz ./nix"
+    },
+
+    {
+      "type": "file",
+      "source": "./custompkgs.tar.gz",
+      "destination": "/"
+    },
+    {
+      "type": "shell",
+      "script": "./datafeed_install.sh"
+    }
+  ]
+}

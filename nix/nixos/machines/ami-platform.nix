@@ -30,12 +30,17 @@ in
         #!${pkgs.stdenv.shell} -eu
 
         echo "Reruning nixos-rebuild with new user-data"
-        echo "nixpath: ${config.customNixPathStr}"
-        export NIX_PATH="${config.customNixPathStr}"
-        export PATH=${pkgs.lib.makeBinPath [config.system.build.nixos-rebuild]}:$PATH
-        export HOME=/root
+        userData=/etc/ec2-metadata/user-data
+        if [ -s "$userData" ]; then
+          echo "nixpath: ${config.customNixPathStr}"
+          export NIX_PATH="${config.customNixPathStr}"
+          export PATH=${pkgs.lib.makeBinPath [config.system.build.nixos-rebuild]}:$PATH
+          export HOME=/root
 
-        nixos-rebuild switch
+          nixos-rebuild switch
+        else
+          echo "User data not available"
+        fi
       '';
       description = "Reconfigure system including EC2 user-data";
       wantedBy = ["multi-user.target"];
