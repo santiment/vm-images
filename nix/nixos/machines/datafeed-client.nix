@@ -13,12 +13,14 @@ let
     else builtins.fromJSON userDataText;
 in
 {
-  imports = [<platform> ../modules/trollbox-client.nix];
+  #imports = [<platform> ../modules/trollbox-client.nix];
+  imports = [<platform> ../modules/btce-client.nix ];
 
-  services.trollboxclient.enable = true;
+  #services.trollboxclient.enable = true;
+  services.btce-client.enable = true;
 
-    # Configure the trollbox client via environment variables passed in
   # the user-data file
 
-  services.trollboxclient.elasticsearchHost = "http://${userData.elasticsearchHost}";
+  #services.trollboxclient.elasticsearchHost = "http://${userData.elasticsearchHost}";
+  services.btce-client.elasticsearchHost = "http://${userData.elasticsearchHost}";
 }

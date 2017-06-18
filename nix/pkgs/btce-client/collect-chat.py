@@ -8,6 +8,8 @@ import datetime
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 
+print("Starting BTCE client\n")
+
 
 if not ("ELASTICSEARCH_HOST" in os.environ):
     print("WARN: No elasticsearch host given. Using http://localhost instead", file=sys.stderr)
