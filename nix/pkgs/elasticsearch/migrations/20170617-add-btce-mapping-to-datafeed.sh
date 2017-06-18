@@ -25,6 +25,7 @@ curl -XPUT "${ES_ADDRESS}/datafeed/_mapping/btce_message" -d @- -H 'Content-Type
   "btceTime": {"type" : "date"},
   "btceMsgId": { "type" : "long" },
   "btceUsername": { "type" : "keyword" },
+  "btceId": {"type": "long"},
   "message": { "type" : "text" }
 }
 }

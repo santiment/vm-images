@@ -42,6 +42,10 @@ with btceapi.BTCEConnection() as connection:
 
         for message in messages:
             msgId, user, btceTime, text = message
+
+            #msgId has format "msgXXXXXXXX", where XXXXXXXX is an increasing number
+            longId = int(msgId[3:])
+
             doc = {
                 '_index': 'datafeed',
                 '_type': 'btce_message',
@@ -49,6 +53,7 @@ with btceapi.BTCEConnection() as connection:
                 'message': text,
                 'btceUsername': user,
                 'btceTime': btceTime,
+                'btceId': longId,
                 'receivedTimestamp':receivedTimestamp
             }
             #print("%s: %s %s: %s" % (msgId, btceTime, user, text))
