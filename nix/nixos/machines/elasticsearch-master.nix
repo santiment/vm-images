@@ -43,7 +43,7 @@ in
 
       javaOptions = if userData.environment == "stage"
         then "-Xms300m -Xmx300m"
-        else "-Xms2g -Xmx2g";
+        else "-Xms1g -Xmx1g";
       plugins = [(import <custom> {}).elasticsearchPlugins.discovery-ec2];
     };
 

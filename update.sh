@@ -1,12 +1,16 @@
 #!/usr/bin/env nix-shell
 #!nix-shell '<nixpkgs>' -p bash git jq awscli -i bash
 
+if [ -z "$ENV" ]; then
+    ENV=stage
+fi
+
 ROOT=`git rev-parse --show-toplevel`
 NIX=$1
 
 RESULTS=`aws ec2 describe-instances\
                --filters "Name=tag:Nix,Values=${NIX}"\
-                         "Name=tag:Environment,Values=stage" |\
+                         "Name=tag:Environment,Values=${ENV}" |\
              jq --raw-output\
                '.Reservations | map(.Instances | map([.PrivateIpAddress, .InstanceId] | join(","))) | flatten | join("\n")'`
 
@@ -29,6 +33,7 @@ for RES in $RESULTS; do
         touch ./user-data
     else
         DECODED=`echo "$EXTRACTED"| base64 -d`
+        echo "${DECODED}"
         echo "$DECODED" > ./user-data
     fi
 

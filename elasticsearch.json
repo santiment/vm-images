@@ -4,7 +4,7 @@
       "type":"amazon-ebs",
       "region":"eu-central-1",
       "source_ami": "ami-5450803b",
-      "ami_name": "santiment-elasticsearch-main-master-v1.2.3",
+      "ami_name": "santiment-elasticsearch-main-master-v1.2.4",
       "instance_type":"t2.medium",
       "ami_virtualization_type":"hvm",
       "ssh_username":"root",
