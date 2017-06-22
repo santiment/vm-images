@@ -4,7 +4,7 @@
       "type":"amazon-ebs",
       "region":"eu-central-1",
       "source_ami":"ami-5450803b",
-      "ami_name": "santiment-datafeed-v1.1.1",
+      "ami_name": "santiment-datafeed-v1.2.0",
       "instance_type":"m3.large",
       "ami_virtualization_type":"hvm",
       "ssh_username":"root"
