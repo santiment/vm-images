@@ -33,7 +33,7 @@ with btceapi.BTCEConnection() as connection:
         global delay
 
         mainPage = info.scrapeMainPage()
-        receivedTimestamp = math.floor(time.time())
+        receivedTimestamp = math.floor(time.time()*1000)
         messages = mainPage.messages;
 
 
@@ -84,7 +84,7 @@ with btceapi.BTCEConnection() as connection:
         if secs == 0:
             # We received only one message this time. This is weird,
             # so log it and choose some reasonalbe constant
-            print("Received a singe message", file=sys.stderr)
+            print("Received a single message", file=sys.stderr)
             delay = 30
         else:
 
