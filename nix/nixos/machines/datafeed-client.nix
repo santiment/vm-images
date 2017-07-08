@@ -5,12 +5,14 @@ let
     then builtins.readFile <user-data>
     else "";
 
+  defaultUserData = {
+    elasticsearchHost = "localhost";
+    environment = "dev";
+  };
+
   userData = if (userDataText == "")
-    then {
-      elasticsearchHost = "localhost";
-      environment = "stage";
-    }
-    else builtins.fromJSON userDataText;
+    then defaultUserData
+    else defaultUserData // (builtins.fromJSON userDataText);
 in
 {
   #imports = [<platform> ../modules/trollbox-client.nix];
