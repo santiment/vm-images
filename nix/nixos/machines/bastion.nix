@@ -27,6 +27,8 @@ let
 in {
   imports = [<platform>];
 
+  environment.systemPackages = [pkgs.postgresql];
+
   systemd.services.bastion-init = {
     inherit script;
     description = "Set the elastic ip";
