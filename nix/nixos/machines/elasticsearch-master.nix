@@ -60,6 +60,36 @@ in
          autoResize = true;
       };
     };
+
+    networking.firewall.allowedTCPPorts = [ 8300 8301 8302 8400 8500 8600 ];
+    networking.firewall.allowedUDPPorts = [ 8301 8302 8400 8500 8600 ];
+    services.consul = {
+      enable = true;
+      package = (import <custom> {}).consul;
+
+      interface = {
+        advertise = "eth0";
+      };
+      
+
+      extraConfig = {
+        server = true;
+        #The terraform user_data file sends a string so we have to convert it
+        bootstrap_expect = if builtins.isInt userData.consulNumberOfServers
+	  then userData.consulNumberOfServers
+	  else
+	    let
+	      maybe_int = builtins.fromJSON userData.consulNumberOfServers;
+ 	    in if builtins.isInt maybe_int
+	      then maybe_int
+	      else throw "Could not convert userData value ${userData.consuleNumberOfServers} to int";
+	    
+	ui =  true;
+	retry_join = ["provider=aws tag_key=Environment tag_value=${userData.environment}"];
+      };
+    };
+
   };
+
 
 }

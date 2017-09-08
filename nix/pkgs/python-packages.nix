@@ -11,7 +11,7 @@ pythonPackages // {
 
       doCheck = false;
 
-      propagatedBuildInputs = [ urllib3 requests2 ];
+      propagatedBuildInputs = [ urllib3 requests ];
       buildInputs = [nosexcover mock];
 
       meta = {

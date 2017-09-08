@@ -10,4 +10,5 @@ rec {
   elasticsearchPlugins = callPackage ./elasticsearch/plugins.nix {inherit elasticsearch;};
   pythonPackages = callPackage ./python-packages.nix {pythonPackages = pkgs.python35Packages;};
   btce-client = callPackage ./btce-client {inherit pythonPackages;};
+  consul = callPackage ./consul {};
 }
