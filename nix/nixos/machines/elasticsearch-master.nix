@@ -73,6 +73,7 @@ in
       
 
       extraConfig = {
+        client_addr = "0.0.0.0";
         server = true;
         #The terraform user_data file sends a string so we have to convert it
         bootstrap_expect = if builtins.isInt userData.consulNumberOfServers
