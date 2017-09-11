@@ -63,6 +63,13 @@ in
 
     networking.firewall.allowedTCPPorts = [ 8300 8301 8302 8400 8500 8600 ];
     networking.firewall.allowedUDPPorts = [ 8301 8302 8400 8500 8600 ];
+
+    # set up consul dns forwarding
+    services.dnsmasq = {
+      enable = true;
+      servers = [ "/consul/127.0.0.1#8600"];
+    };
+
     services.consul = {
       enable = true;
       package = (import <custom> {}).consul;
@@ -70,7 +77,6 @@ in
       interface = {
         advertise = "eth0";
       };
-      
 
       extraConfig = {
         client_addr = "0.0.0.0";
@@ -89,8 +95,5 @@ in
 	retry_join = ["provider=aws tag_key=Environment tag_value=${userData.environment}"];
       };
     };
-
   };
-
-
 }
