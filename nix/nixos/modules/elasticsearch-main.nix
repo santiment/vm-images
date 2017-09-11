@@ -14,6 +14,21 @@ let
     ${cfg.extraConf}
   '';
 
+  consulConfig = builtins.toJSON {
+    service = {
+      name = "elasticsearch";
+      port = cfg.port;
+      checks = [ {
+        name = "HTTP API on port ${toString cfg.port}";
+	http = "http://localhost:${toString cfg.port}/_cluster/health";
+	method = "GET";
+	interval = "30s";
+      } ];
+    };
+  };
+
+
+
   jvmConfig = ''
     ## JVM configuration
 
@@ -151,6 +166,7 @@ let
       (pkgs.writeTextDir "elasticsearch.yml" esConfig)
       (pkgs.writeTextDir "log4j2.properties" cfg.logging)
       (pkgs.writeTextDir "jvm.options" jvmConfig)
+      (pkgs.writeTextDir "elasticsearch-consul.json" consulConfig)
       (pkgs.writeTextFile {
         name = "elascticsearch-config-scripts";
         destination = "/scripts/.empty";
@@ -351,6 +367,9 @@ in {
 
     # Set virtual memory
     boot.kernel.sysctl."vm.max_map_count" = 262144;
+
+    # Write consul service definition
+    services.consul.extraConfigFiles = [ "${configDir}/elasticsearch-consul.json" ];
 
     systemd.services.elasticsearch = {
       description = "Elasticsearch Daemon";
