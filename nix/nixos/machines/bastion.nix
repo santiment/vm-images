@@ -64,5 +64,10 @@ in {
       openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDiCPr/TyiQ0QqrLCefVaB0C46MvEUUvwh+fcKNa5LZmVZ9vfpSNyPfzAuh+3vpF0g3HnvOHeC4G5prWe4iVq1OM3IotTdC0xv48TXPYPvAyMz9zvMZ3OKxtglp+Qedr1pF8udZ663FgXHRFhT26Sh11t7gwTtpt22ESN5W+RoWvKlivOAJE5OW+smPk6pHhzhow1FkKiIcFSZ/Mqlsuj8dkLsSZDjkKXD84SkBQuR0b2J1Iz/ycA1JskP7xn3GVWFSqT4FDmnxVR5CwRVrujIj0jslY+gQYCIzg1u+lxcQanB2k7AEjJia7B+vHJIFdrdQEmKtVIwTQz9klsThDNyGVe2KOh6znShbIC2BmjctvW7HooHTidWxdR0eOg0cQh1tiZRrDMo8hD3UEYqYh/Hy8NeD4ohBUfwQas7l+Az+nlAIPZ3vTz8i5bxvA/Xvzcp59tIaU62BMy+Q86+z8CTudR+fqq+HStGJ6C1qnQ2N9lmXia923qnJFKNcU1RkFjcAFa5p2DYRhpSoWmy0bNVv+ZqS/2tFDyAONIyAZk2KwF93Hzat8jcttzSdycvLm7wtTO+L/sXb2MzrXi5YYW2+9UkL3pGH1UEwOVrKgDqGYzitBNg2K/Wsd68GfARaag4o12/NLOkALP2YlxJG4EG4Vdr1lvQWZbXZpJfaJMjrIw== bobrovova@gmail.com"];
     };
 
-  }
+    dip = {
+      description = "Dimitry Palchun";
+      openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDBG6Baw7gxxwUsepX510whp7v2BlsEPugT0BtDA91uEqcE7RewmAYl/u58GmzNrfdoduJkypijU+kE9WRLtAVKksBmGkhyxYobmonkZo0T2nCUjkR7g8Gmsz4WHCVtw1AEYkQ+3NPx40nzYIkNYijq2dzu0TxDdM6981N+5eD8GOfxpgK4UgfgDZKGl5c4KcGK5sVL+V3j3iKzMDBvnQZNB3k5lAA7LWFoUd5jSJBj1yi975qHKL9kEcK3p2frkcQK0bIXV3FmmxTh2FF5cVM5vGMmG0LAioGKlreNl5Een/91cJr/wU6tH3OQZTdrzWKxbJjv9kSOhqoBJzgOkvrXZbotrzJzYMwkbgOjm2X+Zz9Pjb89af8lKoDiwD6DpdMNz0RRwIiwmjfbo817jjX653gBUMliTWDXj+Dq+dICTIKvg/eGx59fZNdYKCvNCO0bZzERpjjWFXglpUp/Q4DfSs4W6Bp/WIuRQdhn8xtkevfX7OCpmnu3df2wPQjCyqWBG+rvdRzhxrtFm4GDyq7aFqRgHpF/J4X7Fq/1/VVqPDrVYja3gFzRIfiiwcexfGki2TvCGp6G7RdYrWRxSJWwIAY4N/wTB2JQeAthIl/KJgFK9QK3iXKrEkihuzBKjs7sUOt/bp8SBca24jkEvrTQ0SsGovdsKjAa7KbUufsn/Q== dip@dip-office.net"];
+    };
+
+  };
 }

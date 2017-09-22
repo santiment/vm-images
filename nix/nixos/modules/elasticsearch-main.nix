@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.services.elasticsearch-main;
+  cfg = config.services.santiment.elasticsearch-main;
 
   esConfig = ''
     network.host: ${cfg.listenAddress}
@@ -187,9 +187,10 @@ let
 
 in {
 
+  imports = [./consul.nix];
   ###### interface
 
-  options.services.elasticsearch-main = {
+  options.services.santiment.elasticsearch-main = {
     enable = mkOption {
       description = "Whether to enable elasticsearch main server.";
       default = false;
@@ -359,6 +360,18 @@ in {
       type = types.string;
     };
 
+    consul = mkOption {
+      description = "Whether to advertise this service in consul";
+      default = true;
+      type = types.bool;
+    };
+
+    environment = mkOption {
+      description = "Deployment environment";
+      default = "stage";
+      type = types.string;
+    };
+
   };
 
   ###### implementation
@@ -369,8 +382,12 @@ in {
     boot.kernel.sysctl."vm.max_map_count" = 262144;
 
     # Write consul service definition
-    services.consul.extraConfigFiles = [ "${configDir}/elasticsearch-consul.json" ];
-
+    services.santiment.consul = mkIf cfg.consul {
+      enable = true;
+      environment = cfg.environment;
+      extraConfigFiles = [ "${configDir}/elasticsearch-consul.json" ];
+    };
+    
     systemd.services.elasticsearch = {
       description = "Elasticsearch Daemon";
       wantedBy = [ "multi-user.target" ];

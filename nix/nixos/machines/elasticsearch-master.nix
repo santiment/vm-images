@@ -18,10 +18,10 @@ let
 in
 {
 
-  imports = [<platform> ../modules/elasticsearch-main.nix];
+  imports = [<platform> ../modules/santiment.nix];
 
   config = {
-    services.elasticsearch-main = {
+    services.santiment.elasticsearch-main = {
       enable = true;
 
       extraConf = ''
@@ -38,6 +38,7 @@ in
 
       cluster_name = "main";
       listenAddress = "[ \"_site_\", \"_local_\"]";
+      
 
       dataDir = "/var/lib/elasticsearch";
 
@@ -61,39 +62,21 @@ in
       };
     };
 
-    networking.firewall.allowedTCPPorts = [ 8300 8301 8302 8400 8500 8600 ];
-    networking.firewall.allowedUDPPorts = [ 8301 8302 8400 8500 8600 ];
+    # set up consul server
+    services.santiment.consul = {
+      enableServer = true;
+      environment = userData.environment;
 
-    # set up consul dns forwarding
-    services.dnsmasq = {
-      enable = true;
-      servers = [ "/consul/127.0.0.1#8600"];
-    };
-
-    services.consul = {
-      enable = true;
-      package = (import <custom> {}).consul;
-
-      interface = {
-        advertise = "eth0";
-      };
-
-      extraConfig = {
-        client_addr = "0.0.0.0";
-        server = true;
-        #The terraform user_data file sends a string so we have to convert it
-        bootstrap_expect = if builtins.isInt userData.consulNumberOfServers
-	  then userData.consulNumberOfServers
-	  else
-	    let
-	      maybe_int = builtins.fromJSON userData.consulNumberOfServers;
- 	    in if builtins.isInt maybe_int
-	      then maybe_int
-	      else throw "Could not convert userData value ${userData.consuleNumberOfServers} to int";
-	    
-	ui =  true;
-	retry_join = ["provider=aws tag_key=Environment tag_value=${userData.environment}"];
-      };
+      # The terraform user_data file sends a string so we have to convert it
+      bootstrapExpect = if builtins.isInt userData.consulNumberOfServers
+        then userData.consulNumberOfServers
+	else
+	  let
+	    maybe_int = builtins.fromJSON userData.consulNumberOfServers;
+	  in if builtins.isInt maybe_int
+	    then maybe_int
+	    else throw "Could not convert userData value ${userData.consulNumberofservers} to int";
+      ui = true;	  
     };
   };
 }
