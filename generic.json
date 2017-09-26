@@ -1,0 +1,41 @@
+{
+  "variables": {
+    "deployment_environment" : "master"
+  },
+  
+  "builders":[
+    {
+      "type":"amazon-ebs",
+      "region":"eu-central-1",
+      "source_ami":"ami-5450803b",
+      "ami_name": "santiment-generic-{{user `deployment_environment`}}-v1.0.2",
+      "instance_type":"m3.large",
+      "ami_virtualization_type":"hvm",
+      "ssh_username":"root"
+    }
+  ],
+
+  "provisioners":[
+    {
+      "type": "file",
+      "source": "./configuration.nix",
+      "destination": "/etc/nixos/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+	"echo \"{{user `deployment_environment`}}\" >/etc/nixos/deployment_environment"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+	"nix-channel --remove nixos",
+	"nixos-rebuild switch -I nixpkgs=https://github.com/santiment/nixpkgs/archive/{{user `deployment_environment`}}.tar.gz -I nixos-config=/etc/nixos/configuration.nix",
+	"nix-collect-garbage -d",
+	"rm -rf /root/.ssh",
+	"rm -rf /etc/ec2-metadata"
+      ]
+    }
+  ]
+}
