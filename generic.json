@@ -1,6 +1,7 @@
 {
   "variables": {
-    "deployment_environment" : "master"
+    "deployment_environment" : "master",
+    "deployment_keys_path": ""
   },
   
   "builders":[
@@ -8,7 +9,7 @@
       "type":"amazon-ebs",
       "region":"eu-central-1",
       "source_ami":"ami-5450803b",
-      "ami_name": "santiment-generic-{{user `deployment_environment`}}-v1.0.2",
+      "ami_name": "santiment-generic-{{user `deployment_environment`}}-v1.1.0",
       "instance_type":"m3.large",
       "ami_virtualization_type":"hvm",
       "ssh_username":"root"
@@ -24,14 +25,22 @@
     {
       "type": "shell",
       "inline": [
-	"echo \"{{user `deployment_environment`}}\" >/etc/nixos/deployment_environment"
+	"echo \"{{user `deployment_environment`}}\" >/etc/nixos/deployment_environment",
+	"mkdir -p /etc/nixos/secrets"
       ]
+    },
+    {
+      "type": "file",
+      "source": "{{user `deployment_keys_path`}}",
+      "destination": "/etc/nixos/secrets/"
     },
     {
       "type": "shell",
       "inline": [
+	"chown -R nobody:nixbld /etc/nixos/secrets",
+	"chmod 440 /etc/nixos/secrets/*",
 	"nix-channel --remove nixos",
-	"nixos-rebuild switch -I nixpkgs=https://github.com/santiment/nixpkgs/archive/{{user `deployment_environment`}}.tar.gz -I nixos-config=/etc/nixos/configuration.nix",
+	"nixos-rebuild switch -I nixpkgs=https://github.com/santiment/nixpkgs/archive/{{user `deployment_environment`}}.tar.gz -I nixos-config=/etc/nixos/configuration.nix -I ssh-config-file=/etc/nixos/secrets/sshconfig",
 	"nix-collect-garbage -d",
 	"rm -rf /root/.ssh",
 	"rm -rf /etc/ec2-metadata"
